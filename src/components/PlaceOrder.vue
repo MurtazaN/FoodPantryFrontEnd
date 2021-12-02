@@ -13,6 +13,9 @@
     <input v-model="newItemName">
     <button @click="addItem">Add Item</button>
     <p></p>
+    <input v-model="filteredByname">
+    <button @click="filterByName">Filter by name</button>
+    <p></p>
     <div v-show="addItemStatus === 'errored'">Could not add item.</div>
     <div v-show="addItemStatus === 'sending'">Adding item. Please wait.</div>
     <div v-show="status === 'errored'">Could not load items.</div>
@@ -31,6 +34,7 @@ export default {
       items: null,
       status: 'loading', // loaded, errored
       newItemName: '',
+      filteredByname: '',
       addItemStatus: 'idle', // sending, errored
     }
   }, 
@@ -71,6 +75,19 @@ export default {
               console.error(error);
               this.addItemStatus = 'errored';
           })
+    },
+    async filterByName(){
+      try{
+        let itemsUrl = "http://localhost:10001/items?name="+this.filteredByname;
+        this.filteredByname = '';
+        console.log(itemsUrl);
+        let response = await axios.get(itemsUrl);
+        this.items = response.data;
+        this.status = 'loaded';
+      } catch (error) {
+          console.error(error);
+          this.status = 'errored';
+      }
     }
   }
 }
