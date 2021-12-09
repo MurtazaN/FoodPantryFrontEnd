@@ -24,6 +24,9 @@
     <p></p>
     <div v-show="addItemStatus === 'errored'">Could not add item.</div>
     <div v-show="addItemStatus === 'sending'">Adding item. Please wait.</div>
+    <div v-show="updateItemStatus === 'updating'">Updating item. Please wait.</div>
+    <div v-show="updateItemStatus === 'updated'">Item updated.</div>
+    <div v-show="updateItemStatus === 'errored'">Could not update item.</div>
     <div v-show="status === 'errored'">Could not load items.</div>
     <div v-show="status === 'loading'">Loading items. Please wait...</div>
     <div v-show="status === 'loaded' && items.length === 0">No items.</div>
@@ -102,17 +105,17 @@ export default {
       /*let nameURL = "http://localhost:10001/items/" + this.itemId, newName;
       this.updatedName = '';
       this.itemId = '';*/
-      //this.updateItemStatus = 'sending';
+      this.updateItemStatus = 'updating';
       axios.put("http://localhost:10001/items/" + this.itemId, newName)
           .then(() => {
-              //this.updateItemStatus = 'idle';
               this.getItems();
+              this.updateItemStatus = 'updated';
               this.updatedName = '';
               this.itemId = '';
           })
           .catch(error => {
               console.error(error);
-              //this.updateItemStatus = 'errored';
+              this.updateItemStatus = 'errored';
           })
     }
 
