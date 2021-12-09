@@ -16,6 +16,12 @@
     <input v-model="filteredByname">
     <button @click="filterByName">Filter by name</button>
     <p></p>
+    Name
+    <input v-model="updatedName">
+    ID
+    <input v-model="itemId">
+    <button @click="updateItem">Update Item name</button>
+    <p></p>
     <div v-show="addItemStatus === 'errored'">Could not add item.</div>
     <div v-show="addItemStatus === 'sending'">Adding item. Please wait.</div>
     <div v-show="status === 'errored'">Could not load items.</div>
@@ -36,6 +42,8 @@ export default {
       newItemName: '',
       filteredByname: '',
       addItemStatus: 'idle', // sending, errored
+      itemId: '',
+      updatedName:''
     }
   }, 
   props: {
@@ -88,7 +96,26 @@ export default {
           console.error(error);
           this.status = 'errored';
       }
+    },
+    updateItem(){
+      let newName = { name: this.updatedName };
+      /*let nameURL = "http://localhost:10001/items/" + this.itemId, newName;
+      this.updatedName = '';
+      this.itemId = '';*/
+      //this.updateItemStatus = 'sending';
+      axios.put("http://localhost:10001/items/" + this.itemId, newName)
+          .then(() => {
+              //this.updateItemStatus = 'idle';
+              this.getItems();
+              this.updatedName = '';
+              this.itemId = '';
+          })
+          .catch(error => {
+              console.error(error);
+              //this.updateItemStatus = 'errored';
+          })
     }
+
   }
 }
 </script>
