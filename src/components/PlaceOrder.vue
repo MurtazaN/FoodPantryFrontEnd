@@ -102,16 +102,14 @@ export default {
     },
     updateItem(){
       let newName = { name: this.updatedName };
-      /*let nameURL = "http://localhost:10001/items/" + this.itemId, newName;
+      let nameURL = "http://localhost:10001/items/" + this.itemId;
       this.updatedName = '';
-      this.itemId = '';*/
+      this.itemId = '';
       this.updateItemStatus = 'updating';
-      axios.put("http://localhost:10001/items/" + this.itemId, newName)
+      axios.put(nameURL, newName)
           .then(() => {
               this.getItems();
               this.updateItemStatus = 'updated';
-              this.updatedName = '';
-              this.itemId = '';
           })
           .catch(error => {
               console.error(error);
